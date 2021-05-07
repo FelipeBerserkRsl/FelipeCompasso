@@ -16,15 +16,14 @@ import com.example.desafio.repository.ProductRepository;
 
 @Service
 public class ProductService {
-	
+
 	Logger log = LoggerFactory.getLogger(ProductService.class);
 
-	
 	@Autowired
 	ProductRepository productRepository;
 
 	public ResponseEntity<?> postMappingValidation(Product product) {
-		logger.info("serviço de post");
+		log.info("serviço de post");
 		Erro er = new Erro();
 		if (product.getName() == null) {
 
@@ -43,46 +42,45 @@ public class ProductService {
 
 			return ResponseEntity.status(400).body(er);
 		} else {
-			
+
 			productRepository.save(product);
-			
+
 			return ResponseEntity.status(201).body(product);
 		}
 
 	}
 
 	public List<Product> getList() {
-		logger.info("serviço get lista produtos");
+		log.info("serviço get lista produtos");
 		return productRepository.findAll();
 	}
-	
-	public  ResponseEntity<?> deleteProduct(String id) {
-		logger.info("serviço delete produtos");
+
+	public ResponseEntity<?> deleteProduct(String id) {
+		log.info("serviço delete produtos");
 		Optional<Product> findById = productRepository.findById(id);
 		if (findById.isPresent()) {
-		productRepository.deleteById(id);
+			productRepository.deleteById(id);
 			return ResponseEntity.ok().body(null);
-		}else {
+		} else {
 			return ResponseEntity.status(404).body(null);
 		}
 	}
 
 	public ResponseEntity<Optional<Product>> getProdutoById(String id) {
 
-		logger.info("serviço get produto por id");
+		log.info("serviço get produto por id");
 		Optional<Product> findById = productRepository.findById(id);
-		
-		if(findById.isPresent()){
+
+		if (findById.isPresent()) {
 			return ResponseEntity.ok().body(findById);
-		}else {
+		} else {
 			return ResponseEntity.status(404).body(null);
 		}
-		
-	
+
 	}
 
 	public Product updateProduct(Product produto, String id) {
-		logger.info("serviço update produto");
+		log.info("serviço update produto");
 		Optional<Product> findById = productRepository.findById(id);
 		Product produto2 = findById.get();
 		produto2.setDescription(produto.getDescription());
@@ -91,14 +89,14 @@ public class ProductService {
 		produto2.setId(id);
 		productRepository.save(produto2);
 		return produto2;
-		
+
 	}
 
 	public List<Product> getProdutoByFilter(String q, Double min, Double max) {
-		
-		logger.info("serviço get produto by filter");
-			return productRepository.findByPriceSearch(min, max, q);
-		
+
+		log.info("serviço get produto by filter");
+		return productRepository.findByPriceSearch(min, max, q);
+
 	}
 
 }
