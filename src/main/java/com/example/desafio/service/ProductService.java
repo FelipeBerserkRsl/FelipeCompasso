@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.stereotype.Service;
 
 import com.example.desafio.model.Erro;
@@ -18,11 +19,11 @@ public class ProductService {
 	
 	Logger log = LoggerFactory.getLogger(ProductService.class);
 
-	static Integer i = 0;
+	
 	@Autowired
 	ProductRepository productRepository;
 
-	public ResponseEntity<?> validation(Product product) {
+	public ResponseEntity<?> postMappingValidation(Product product) {
 		Erro er = new Erro();
 		if (product.getName() == null) {
 
@@ -41,9 +42,9 @@ public class ProductService {
 
 			return ResponseEntity.status(400).body(er);
 		} else {
-			product.setId(i.toString());
+			
 			productRepository.save(product);
-			i++;
+			
 			return ResponseEntity.status(201).body(product);
 		}
 
@@ -54,14 +55,27 @@ public class ProductService {
 		return productRepository.findAll();
 	}
 	
-	public void deleteProduct(String id) {
-		productRepository.deleteById(id);
+	public  ResponseEntity<?> deleteProduct(String id) {
 		
+		Optional<Product> findById = productRepository.findById(id);
+		if (findById.isPresent()) {
+		productRepository.deleteById(id);
+			return ResponseEntity.ok().body(null);
+		}else {
+			return ResponseEntity.status(404).body(null);
+		}
 	}
 
-	public Optional<Product> getProdutoById(String id) {
+	public ResponseEntity<Optional<Product>> getProdutoById(String id) {
 		Optional<Product> findById = productRepository.findById(id);
-		return findById;
+		
+		if(findById.isPresent()){
+			return ResponseEntity.ok().body(findById);
+		}else {
+			return ResponseEntity.status(404).body(null);
+		}
+		
+	
 	}
 
 	public Product updateProduct(Product produto, String id) {
@@ -76,10 +90,10 @@ public class ProductService {
 		
 	}
 
-	public List<Product> getProdutoByFilter(String q, Long min, Long max) {
+	public List<Product> getProdutoByFilter(String q, Double min, Double max) {
 		
-		
-		return productRepository.findPrice(min, max, q);
+	
+			return productRepository.findByPriceSearch(min, max, q);
 		
 	}
 

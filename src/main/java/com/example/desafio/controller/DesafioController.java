@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +34,7 @@ public class DesafioController {
 	@PostMapping("/products")
 	public ResponseEntity<?> postProduct(@RequestBody Product product) {
 		
-		ResponseEntity<?> validation = productService.validation(product);
-
-		return validation;
+		return productService.postMappingValidation(product);
 	}
 
 	@PutMapping("/products/{id}")
@@ -50,21 +49,19 @@ public class DesafioController {
 	}
 
 	@GetMapping("/products/{id}")
-	public Optional<Product> getProductById(@PathVariable String id) {
+	public ResponseEntity<Optional<Product>> getProductById(@PathVariable String id) {
 		return productService.getProdutoById(id);
 	}
 	
 	@GetMapping("/products/search")
-	public List<Product> getProductByFilter(String q, Long min_price,  Long max_price) {
-		
+	public List<Product> getProductByFilter(String q, Double min_price,  Double max_price) {
 		return productService.getProdutoByFilter(q, min_price, max_price);
 	}
 
-
 	@DeleteMapping("/products/{id}")
 	public ResponseEntity<?> deleteProduct(@PathVariable String id) {
-		productService.deleteProduct(id);
-		return ResponseEntity.ok().body(null);
+		return productService.deleteProduct(id);
+		
 	}
 
 }

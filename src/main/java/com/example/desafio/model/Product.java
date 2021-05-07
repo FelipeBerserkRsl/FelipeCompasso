@@ -16,7 +16,7 @@ public class Product {
 	@NotNull
 	private String description;
 	@NotNull
-	private Long price; // valor deve ser positivo
+	private Double price; // valor deve ser positivo
 
 	public String getId() {
 		return id;
@@ -42,11 +42,11 @@ public class Product {
 		this.description = description;
 	}
 
-	public Long getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Long price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 }
