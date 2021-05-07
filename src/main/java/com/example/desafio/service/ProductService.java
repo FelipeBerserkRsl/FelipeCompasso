@@ -24,6 +24,7 @@ public class ProductService {
 	ProductRepository productRepository;
 
 	public ResponseEntity<?> postMappingValidation(Product product) {
+		logger.info("serviço de post");
 		Erro er = new Erro();
 		if (product.getName() == null) {
 
@@ -51,12 +52,12 @@ public class ProductService {
 	}
 
 	public List<Product> getList() {
-		// TODO Auto-generated method stub
+		logger.info("serviço get lista produtos");
 		return productRepository.findAll();
 	}
 	
 	public  ResponseEntity<?> deleteProduct(String id) {
-		
+		logger.info("serviço delete produtos");
 		Optional<Product> findById = productRepository.findById(id);
 		if (findById.isPresent()) {
 		productRepository.deleteById(id);
@@ -67,6 +68,8 @@ public class ProductService {
 	}
 
 	public ResponseEntity<Optional<Product>> getProdutoById(String id) {
+
+		logger.info("serviço get produto por id");
 		Optional<Product> findById = productRepository.findById(id);
 		
 		if(findById.isPresent()){
@@ -79,6 +82,7 @@ public class ProductService {
 	}
 
 	public Product updateProduct(Product produto, String id) {
+		logger.info("serviço update produto");
 		Optional<Product> findById = productRepository.findById(id);
 		Product produto2 = findById.get();
 		produto2.setDescription(produto.getDescription());
@@ -92,7 +96,7 @@ public class ProductService {
 
 	public List<Product> getProdutoByFilter(String q, Double min, Double max) {
 		
-	
+		logger.info("serviço get produto by filter");
 			return productRepository.findByPriceSearch(min, max, q);
 		
 	}
