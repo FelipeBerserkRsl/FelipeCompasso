@@ -33,33 +33,38 @@ public class DesafioController {
 
 	@PostMapping("/products")
 	public ResponseEntity<?> postProduct(@RequestBody Product product) {
-		
+		logger.info("iniciando post produto");
 		return productService.postMappingValidation(product);
 	}
 
 	@PutMapping("/products/{id}")
 	public ResponseEntity<?> putProduto(@RequestBody Product product, @PathVariable String id) {
+		logger.info("iniciando update produto");
 		Product updateProduct = productService.updateProduct(product, id);
 		return ResponseEntity.ok().body(updateProduct);
 	}
 
 	@GetMapping("/products")
 	public ResponseEntity<List<Product>> getProduct() {
+		logger.info("iniciando get lista produtos");
 		return ResponseEntity.ok().body(productService.getList());
 	}
 
 	@GetMapping("/products/{id}")
 	public ResponseEntity<Optional<Product>> getProductById(@PathVariable String id) {
+		logger.info("iniciando get produtos por id");
 		return productService.getProdutoById(id);
 	}
 	
 	@GetMapping("/products/search")
 	public List<Product> getProductByFilter(String q, Double min_price,  Double max_price) {
+		logger.info("iniciando busca por filtros");
 		return productService.getProdutoByFilter(q, min_price, max_price);
 	}
 
 	@DeleteMapping("/products/{id}")
 	public ResponseEntity<?> deleteProduct(@PathVariable String id) {
+		logger.info("iniciando delete produto");
 		return productService.deleteProduct(id);
 		
 	}
