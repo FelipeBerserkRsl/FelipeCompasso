@@ -3,6 +3,8 @@ package com.example.desafio.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import com.example.desafio.repository.ProductRepository;
 
 @Service
 public class ProductService {
+	
+	Logger log = LoggerFactory.getLogger(ProductService.class);
 
 	static Integer i = 0;
 	@Autowired
@@ -72,9 +76,11 @@ public class ProductService {
 		
 	}
 
-	public Optional<Product> getProdutoByFilter(String q, Long min_price, Long max_price) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Product> getProdutoByFilter(String q, Long min, Long max) {
+		
+		
+		return productRepository.findPrice(min, max, q);
+		
 	}
 
 }

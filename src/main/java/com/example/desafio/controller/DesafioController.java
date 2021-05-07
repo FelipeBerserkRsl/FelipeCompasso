@@ -55,10 +55,10 @@ public class DesafioController {
 	}
 	
 	@GetMapping("/products/search")
-	public Optional<Product> getProductByFilter(@PathVariable String q, Long min_price, Long max_price) {
+	public List<Product> getProductByFilter(String q, Long min_price,  Long max_price) {
+		
 		return productService.getProdutoByFilter(q, min_price, max_price);
 	}
-
 
 
 	@DeleteMapping("/products/{id}")
