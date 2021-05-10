@@ -6,8 +6,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity.BodyBuilder;
+
 import org.springframework.stereotype.Service;
 
 import com.example.desafio.model.Erro;
@@ -95,7 +96,38 @@ public class ProductService {
 	public List<Product> getProdutoByFilter(String q, Double min, Double max) {
 
 		log.info("serviço get produto by filter");
-		return productRepository.findByPriceSearch(min, max, q);
+
+		if (min != null && max == null && q == null) {
+			return productRepository.findByPriceSearchMin(min);
+		}
+
+		if (min != null && max != null && q == null) {
+			return productRepository.findByPriceSearchMinAndMax(min, max);
+		}
+
+		if (min != null && max != null && q != null) {
+
+			return productRepository.findByPriceSearchMaxMinAndQ(min, max, q);
+
+		}
+
+		if (min == null && max != null && q == null) {
+			return productRepository.findByPriceSearchMax(max);
+		}
+
+		if (min == null && max != null && q != null) {
+			return productRepository.findByPriceSearchMaxAndQ(max, q);
+		}
+
+		if (min != null && max == null && q != null) {
+			return productRepository.findByPriceSearchMinAndQ(min, q);
+		}
+
+		if (min == null && max == null && q != null) {
+			return productRepository.findByQ(q);
+		}
+
+		return null;
 
 	}
 
