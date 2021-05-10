@@ -40,8 +40,7 @@ public class DesafioController {
 	@PutMapping("/products/{id}")
 	public ResponseEntity<?> putProduto(@RequestBody Product product, @PathVariable String id) {
 		logger.info("iniciando update produto");
-		Product updateProduct = productService.updateProduct(product, id);
-		return ResponseEntity.ok().body(updateProduct);
+		return ResponseEntity.ok().body(productService.updateProduct(product, id));
 	}
 
 	@GetMapping("/products")
